@@ -40,10 +40,6 @@ class _HomePageState extends State<HomePage> {
     duration = (await player.getDuration())!;
   }
 
-  void stopPlayer() async {
-    await player.stop();
-  }
-
   //init the player
   @override
   void initState() {
@@ -103,61 +99,29 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text(
                     "${(value / 60).floor()}: ${(value % 60).floor()}",
-                    style: TextStyle(
-                      color: Colors.white
-                    ),
+                    style: TextStyle(color: Colors.white),
                   ),
                   Container(
                     width: 260.0,
                     child: Slider.adaptive(
+                      onChangeEnd: (new_value) async {
+                        setState(() {
+                          value = new_value;
+                          print(new_value);
+                        });
+                        await player.seek(Duration(seconds: new_value.toInt()));
+                      },
                       min: 0.0,
-                      max: duration!.inSeconds.toDouble(),
-                      value: value, 
-                      onChanged: (v) {
-                        setState(() {
-                          value = v;
-                        });
-                      },
-                      onChangeEnd: (newValue) async {
-                        setState(() {
-                          value = newValue;
-                          print(newValue);
-                        });
-                        // player.pause();
-                        await player.seek(Duration(seconds: newValue.toInt()));
-                        // await player.resume();
-                      },
+                      value: value,
+                      max: 214.0,
+                      onChanged: (value) {},
                       activeColor: Colors.white,
                     ),
                   ),
                   Text(
                     "${duration!.inMinutes} : ${duration!.inSeconds % 60}",
-                    // "${(value / 60).floor()}: ${(value % 60).floor()}",
                     style: TextStyle(color: Colors.white),
                   ),
-                  // Container(
-                  //   width: 260.0,
-                  //   child: Slider.adaptive(
-                  //     onChangeEnd: (new_value) async {
-                  //       setState(() {
-                  //         value = new_value;
-                  //         print(new_value);
-                  //       });
-                  //       player.pause();
-                  //       await player.seek(Duration(seconds: new_value.toInt()));
-                  //       await player.resume();
-                  //     },
-                  //     min: 0.0,
-                  //     value: value,
-                  //     max: duration!.inSeconds.toDouble(),
-                  //     onChanged: (value) {},
-                  //     activeColor: Colors.white,
-                  //   ),
-                  // ),
-                  // Text(
-                  //   "${duration!.inMinutes} : ${duration!.inSeconds % 60}",
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
                 ],
               ),
               //setting the player controller
@@ -202,56 +166,21 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                       onTap: () async {
                         //setting the play function
-                        if (isPlaying) {
-                          await player.pause();
-                        
-                          setState(() {
-                            isPlaying = false;
-                          });
-                        } else {
-                          await player.resume();
+                        await player.resume();
+                        player.onPositionChanged.listen(
+                          (Duration d) {
+                            setState(() {
+                              value = d.inSeconds.toDouble();
 
-                          duration = await player.getDuration();
-                          setState(() {
-                            isPlaying = true;
-                          });
-                          
-                          player.onPositionChanged.listen(
-                            (position) {
-                            // (Duration d) {
-                              setState(() {
-                                // value = d.inSeconds.toDouble();
-                                value = position.inSeconds.toDouble();
-                              });
-                            }
-                          );
-                        }
-                        // setState(() async {
-                        //   duration = await player.getDuration();
-                        // });
-                        // if (isPlaying) {
-                        //   await player.pause();
-                        //   setState(() {
-                        //     isPlaying = false;
-                        //   });
-                        // } else {
-                        //   await player.resume();
-                        //   player.onPositionChanged.listen(
-                        //     (Duration d) {
-                        //       setState(() {
-                        //         value = d.inSeconds.toDouble();
-
-                        //         print(value);
-                        //       });
-                        //     },
-                        //   );
-                        // }
-
+                              print(value);
+                            });
+                          },
+                        );
                         print(duration);
                       },
                       child: Center(
                         child: Icon(
-                          isPlaying ? Icons.pause : Icons.play_arrow,
+                          Icons.play_arrow,
                           color: Colors.white,
                         ),
                       ),
@@ -272,9 +201,6 @@ class _HomePageState extends State<HomePage> {
                       onTapUp: (details) {
                         player.setPlaybackRate(1);
                       },
-                      // onTap: () async {
-                      //   await player.resume();
-                      // },
                       child: Center(
                         child: Icon(
                           Icons.fast_forward_rounded,
