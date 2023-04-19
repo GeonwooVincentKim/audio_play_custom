@@ -50,34 +50,40 @@ class _HomeState extends State<Home> {
             future: getLastFmList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  physics: const ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding (
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                      child: Container(
-                        color: Colors.amberAccent,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: Center(child: Text("box $index"))  
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 12);
-                  },
-                );
+                return makeLastFm(snapshot);
               }
-
+        
               return const Center(
-                child: CircularProgressIndicator()
+                child: CircularProgressIndicator(),
               );
-            },
+            }, 
           )
         ),
       ),
+    );
+  }
+
+  ListView makeLastFm(AsyncSnapshot<List<LastFm>> snapshot) {
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: snapshot.data!.length,
+      physics: const ClampingScrollPhysics(),
+      itemBuilder: (context, index) {
+        var getLastFmContents = snapshot.data![index];
+
+        return Padding (
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: Container(
+            color: Colors.amberAccent,
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: Center(child: Text("box $index"))  
+          ),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 12);
+      },
     );
   }
 }
