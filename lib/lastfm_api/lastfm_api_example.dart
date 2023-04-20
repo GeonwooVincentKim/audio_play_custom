@@ -48,42 +48,62 @@ class _HomeState extends State<Home> {
           scrollDirection: Axis.vertical,
           child: FutureBuilder(
             future: getLastFmList,
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                return makeLastFm(snapshot);
+                return ListView.separated(
+                  shrinkWrap: true,
+                  // itemCount: 20,
+                  itemCount: snapshot.data!.length,
+                  physics: const ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var musicSummary = snapshot.data![index];
+
+                    return LastFmListView(lastFm: musicSummary);
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 12);
+                  },
+                );
               }
-        
+
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator()
               );
-            }, 
+            },
           )
         ),
       ),
     );
   }
+}
 
-  ListView makeLastFm(AsyncSnapshot<List<LastFm>> snapshot) {
-    return ListView.separated(
-      shrinkWrap: true,
-      itemCount: snapshot.data!.length,
-      physics: const ClampingScrollPhysics(),
-      itemBuilder: (context, index) {
-        var getLastFmContents = snapshot.data![index];
+class LastFmListView extends StatelessWidget {
+  final LastFm lastFm;
+  
+  const LastFmListView({
+    super.key,
+    required this.lastFm
+  });
 
-        return Padding (
-          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          child: Container(
-            color: Colors.amberAccent,
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Center(child: Text("box $index"))  
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const SizedBox(height: 12);
-      },
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding (
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: Container(
+        color: Colors.amberAccent,
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(lastFm.artist),
+            Text(lastFm.name),
+            Text(lastFm.url)
+          ],
+        )
+      ),
     );
   }
 }

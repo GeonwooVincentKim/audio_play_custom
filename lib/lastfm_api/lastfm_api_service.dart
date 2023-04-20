@@ -15,12 +15,31 @@ class ApiService {
 
     if (urlResponse.statusCode == 200) {
       final getSong = jsonDecode(urlResponse.body);
+      // print("GetSong -> ${getSong['results']['trackmatches']['track']}");
+      // final results = getSong['results']['trackmatches']['track'];
       final results = getSong['results']['trackmatches']['track'];
+      print("GetSong -> $results");
+      print("\n");
+
+      // final getSongInfo = LastFm.fromJson(results);
+      // print("GetSongInfo -> $getSongInfo");
+
+      // listLastFm.add(getSongInfo);
+
+      // print(results);
 
       for (var result in results) {
         final getSongInfo = LastFm.fromJson(result);
+        // print("ArtistInfo -> ${getSongInfo.artist}");
+        // print("NameInfo -> ${getSongInfo.name}");
+        // print("UrlInfo -> ${getSongInfo.url}");
+
         listLastFm.add(getSongInfo);
       }
+
+      // for (var i = 0; i < listLastFm.length; i++) {
+      // }
+
 
       return listLastFm;
     }
