@@ -52,7 +52,6 @@ class _HomeState extends State<Home> {
               if (snapshot.hasData) {
                 return ListView.separated(
                   shrinkWrap: true,
-                  // itemCount: 20,
                   itemCount: snapshot.data!.length,
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
