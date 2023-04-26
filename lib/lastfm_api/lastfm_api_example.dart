@@ -64,7 +64,6 @@ class _HomeState extends State<Home> {
                   },
                 );
               }
-
               return const Center(
                 child: CircularProgressIndicator()
               );
