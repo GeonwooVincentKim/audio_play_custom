@@ -56,7 +56,6 @@ class _HomeState extends State<Home> {
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
                     var musicSummary = snapshot.data![index];
-
                     return LastFmListView(lastFm: musicSummary);
                   },
                   separatorBuilder: (context, index) {
