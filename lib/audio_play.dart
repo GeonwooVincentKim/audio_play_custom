@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
                     if (isPlaying) {
                       await audioPlayer.pause();
                     } else {
-                      // String url = 'https://media.chosic.com/wp-content/uploads/2022/03/Luke-Bergmann';
+                      String url = 'https://media.chosic.com/wp-content/uploads/2022/03/Luke-Bergmann';
                       // await audioPlayer.play(url);
                     }
                   },
