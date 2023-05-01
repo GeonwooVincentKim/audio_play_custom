@@ -75,11 +75,12 @@ class _HomePageState extends State<HomePage> {
                       left: 8, bottom: 8, right: 8, top: 4),
                   child: SizedBox(
                     child: FadeInImage.assetNetwork(
-                        height: 60,
-                        width: 60,
-                        placeholder: "lib/assets/images/musicplaceholder.png",
-                        image: musicList[index].image.toString(),
-                        fit: BoxFit.fill),
+                      height: 60,
+                      width: 60,
+                      placeholder: "lib/assets/images/musicplaceholder.png",
+                      image: musicList[index].image.toString(),
+                      fit: BoxFit.fill
+                    ),
                   ),
                 ),
               ),
