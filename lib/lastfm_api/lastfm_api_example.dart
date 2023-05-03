@@ -82,7 +82,6 @@ class LastFmListView extends StatelessWidget {
     required this.lastFm
   });
 
-
   @override
   Widget build(BuildContext context) {
     return Padding (
