@@ -21,12 +21,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    // setAudio();
+
     // Listen to states: Playing, paused, stopped
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         isPlaying = state == PlayerState.playing;
       });
     });
+
+    // audioPlayer.setPlaybackRate(1.0);
 
     // Listen to audio duration
     audioPlayer.onDurationChanged.listen((newDuration) {
@@ -41,6 +45,24 @@ class _MyAppState extends State<MyApp> {
         position = newPosition;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+
+    super.dispose();
+  }
+
+  // It will better to not to use this code
+  Future setAudio() async {
+    // Repeat song when completed
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+    // Load audio from URL
+    String url = 'https://thegrowingdeveloper.org/files/audios/quiet-time.mp3?b4869097e4';
+    audioPlayer.setSourceUrl(url);
+    // audioPlayer.setPlaybackRate(1.0);
   }
 
   String formatTime(Duration duration) {
@@ -108,6 +130,8 @@ class _MyAppState extends State<MyApp> {
                       String url = 'https://thegrowingdeveloper.org/files/audios/quiet-time.mp3?b4869097e4';
                       Source urlSource = UrlSource(url);
                       await audioPlayer.play(urlSource);
+                      // await audioPlayer.resume();
+                      // await audioPlayer.setPlaybackRate(1.0);
                     }
                   },
                 )
