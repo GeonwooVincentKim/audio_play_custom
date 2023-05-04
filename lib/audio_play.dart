@@ -17,6 +17,32 @@ class _MyAppState extends State<MyApp> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to states: Playing, paused, stopped
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+
+    // Listen to audio duration
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+    
+    // Listen to audio position
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
@@ -49,7 +75,13 @@ class _MyAppState extends State<MyApp> {
                 min: 0,
                 max: duration.inSeconds.toDouble(),
                 value: position.inSeconds.toDouble(),
-                onChanged: (value) async {},
+                onChanged: (value) async {
+                  final position = Duration(seconds: value.toInt());
+                  await audioPlayer.seek(position);
+
+                  // Optional: Play audio if was paused
+                  await audioPlayer.resume();
+                },
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -72,8 +104,10 @@ class _MyAppState extends State<MyApp> {
                     if (isPlaying) {
                       await audioPlayer.pause();
                     } else {
-                      String url = 'https://media.chosic.com/wp-content/uploads/2022/03/Luke-Bergmann';
-                      // await audioPlayer.play(url);
+                      // String url = 'https://media.chosic.com/wp-content/uploads/2022/03/Luke-Bergmann';
+                      String url = 'https://thegrowingdeveloper.org/files/audios/quiet-time.mp3?b4869097e4';
+                      Source urlSource = UrlSource(url);
+                      await audioPlayer.play(urlSource);
                     }
                   },
                 )
