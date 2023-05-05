@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     audioPlayer.dispose();
-
     super.dispose();
   }
 
