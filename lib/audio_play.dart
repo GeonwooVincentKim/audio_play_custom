@@ -20,7 +20,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     // setAudio();
 
     // Listen to states: Playing, paused, stopped
@@ -31,7 +30,6 @@ class _MyAppState extends State<MyApp> {
     });
 
     // audioPlayer.setPlaybackRate(1.0);
-
     // Listen to audio duration
     audioPlayer.onDurationChanged.listen((newDuration) {
       setState(() {
