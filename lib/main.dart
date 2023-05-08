@@ -37,6 +37,9 @@ class _HomePageState extends State<HomePage> {
 
   void initPlayer() async {
     await player.setSource(AssetSource("music.mp3"));
+    // String url = 'blob:https://www.youtube-nocookie.com/8f3f014a-f41f-466b-8889-9b3d85884ad1';
+    // Source urlSource = UrlSource(url);
+    // await player.play(urlSource);
     duration = (await player.getDuration())!;
   }
 
