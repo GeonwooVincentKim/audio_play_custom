@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               //setting the player controller
-              SizedBox(
+              const SizedBox(
                 height: 60.0,
               ),
               Row(
